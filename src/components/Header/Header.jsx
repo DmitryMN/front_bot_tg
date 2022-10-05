@@ -5,7 +5,7 @@ import './header.css';
 
 export const Header = () => {
 
-    const {onClose, user} = useTelegram;
+    const {onClose, user} = useTelegram();
 
     return (
         <header className='header'>
