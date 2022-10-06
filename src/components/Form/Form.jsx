@@ -18,7 +18,7 @@ const Form = () => {
             subject,
         }
         
-        tg.MainButton.setParams(JSON.stringify(data));
+        tg.sendData(JSON.stringify(data));
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [country, street, subject]);
 
