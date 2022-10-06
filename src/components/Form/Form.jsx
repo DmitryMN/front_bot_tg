@@ -15,9 +15,17 @@ const Form = () => {
         tg.MainButton.setParams({
             text: 'отправить данные',
         })
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    
+
+    useEffect(() => {
+        if(!street || !country ) {
+            tg.MainButton.hide();
+        } else {
+            tg.MainButton.show(); 
+        }
+    }, [country, street]);
+
     const onCountryHandler = (e) => {
         setCountry(e.target.value)
     }
