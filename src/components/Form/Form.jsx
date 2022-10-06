@@ -24,6 +24,7 @@ const Form = () => {
         } else {
             tg.MainButton.show(); 
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [country, street]);
 
     const onCountryHandler = (e) => {
