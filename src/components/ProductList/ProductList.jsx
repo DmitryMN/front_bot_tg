@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './productlist.css';
 import ProductItem from '../ProductItem/ProductItem';
+import { useTelegram } from '../../hooks/useTelegram';
 
 
 const products = [
@@ -14,9 +15,17 @@ const products = [
   { id: '8', title: 'Куртка', description: 'Цвет синий', price: 12000 },
 ];
 
+const getTotalPrice = (items = []) => {
+  return items.reduce((summ, item) => {
+    return item.price + summ
+  }, 0);
+}
+
 const ProductList = () => {
 
   const [addedItems, setAddedItems] = useState([]);
+
+  const { tg } = useTelegram();
 
   const onAdd = (product) => {
     const allreadyAdded = addedItems.find(item => {
@@ -24,8 +33,8 @@ const ProductList = () => {
     });
 
     let newItem = [];
-    
-    if(allreadyAdded) {
+
+    if (allreadyAdded) {
       newItem = addedItems.filter(item => {
         item.id !== product.id;
       });
@@ -34,6 +43,15 @@ const ProductList = () => {
     }
 
     setAddedItems(newItem);
+
+    if (newItem.length === 0) {
+      tg.MainButton.hide()
+    } else {
+      tg.MainButton.show();
+      tg.MainButton.setParams({
+        text: `Купить ${getTotalPrice(newItem)}`
+      });
+    }
 
   }
 
