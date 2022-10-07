@@ -29,14 +29,14 @@ const ProductList = () => {
 
   const onAdd = (product) => {
     const allreadyAdded = addedItems.find(item => {
-      item.id === product.id;
+      return item.id === product.id;
     });
 
     let newItem = [];
 
     if (allreadyAdded) {
       newItem = addedItems.filter(item => {
-        item.id !== product.id;
+        return item.id !== product.id;
       });
     } else {
       newItem = [...addedItems, product];
