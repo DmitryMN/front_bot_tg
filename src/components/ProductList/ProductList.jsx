@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import './productlist.css';
 import ProductItem from '../ProductItem/ProductItem';
 import { useTelegram } from '../../hooks/useTelegram';
+import axios from 'axios';
 
 
 const products = [
@@ -25,7 +26,31 @@ const ProductList = () => {
 
   const [addedItems, setAddedItems] = useState([]);
 
-  const { tg } = useTelegram();
+  const { tg, queryid } = useTelegram();
+
+  const onSendData = useCallback(() => {
+    const data = {
+      products: addedItems,
+      totalPrice: getTotalPrice(addedItems),
+      queryid,
+    }
+
+    axios.post('http://localhost:8000/', JSON.stringify(data), {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    tg.onEvent('mainButtonClicked', onSendData)
+
+    return () => {
+      tg.offEvent('mainButtonClicked', onSendData)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps       
+  }, [onSendData]);
 
   const onAdd = (product) => {
     const allreadyAdded = addedItems.find(item => {
